@@ -1,5 +1,6 @@
 package com.example.facturacion.service.imp;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,13 +36,13 @@ public class FacturaServiceImp implements IFacturaService {
 
 	@Override
 	public void guardarFactura(Factura factura) {
+		LocalDate localDate = LocalDate.now();
 		if(factura.getCliente()==null) throw new ModelNotFoundException("no ingreso cliente");
 		if (factura.getDetalles()==null) throw new ModelNotFoundException("no ingreso detalles de la factura");
 		Factura facturaAux=new Factura();
 		facturaAux.setCliente(factura.getCliente());
-		facturaAux.setFecha(factura.getFecha());
+		facturaAux.setFecha(localDate);
 		facturaAux=repoFactura.save(facturaAux);
-	
 		
 		for(Detalle detalle: factura.getDetalles() ) {
 			Optional<Producto> prod= repoProducto.findById(detalle.getIdProducto().getIdProducto());
